@@ -1,0 +1,22 @@
+[
+    {"name": "Apple iPhone 12", "type": "Electronics", "source_country": "China", "quantity": 100},
+    {"name": "Nike Shoes", "type": "Footwear", "source_country": "Vietnam", "quantity": 200},
+    {"name": "Levi's Jeans", "type": "Clothing", "source_country": "Bangladesh", "quantity": 150},
+    {"name": "Samsung Galaxy S21", "type": "Electronics", "source_country": "South Korea", "quantity": 120},
+    {"name": "Adidas Hoodie", "type": "Clothing", "source_country": "Indonesia", "quantity": 180},
+    {"name": "Sony Playstation 5", "type": "Electronics", "source_country": "Japan", "quantity": 80},
+    {"name": "Dell Laptop", "type": "Electronics", "source_country": "USA", "quantity": 130},
+    {"name": "Nike Socks", "type": "Footwear", "source_country": "China", "quantity": 350},
+    {"name": "Fossil Watch", "type": "Fashion Accessories", "source_country": "India", "quantity": 90},
+    {"name": "Lenovo Thinkpad", "type": "Electronics", "source_country": "China", "quantity": 75},
+    {"name": "Ray-Ban Sunglasses", "type": "Fashion Accessories", "source_country": "Italy", "quantity": 140},
+    {"name": "Adidas Running Shoes", "type": "Footwear", "source_country": "Indonesia", "quantity": 200},
+    {"name": "HP Printer", "type": "Electronics", "source_country": "USA", "quantity": 100},
+    {"name": "Apple Airpods Pro", "type": "Electronics", "source_country": "China", "quantity": 150},
+    {"name": "Calvin Klein Perfume", "type": "Beauty Products", "source_country": "USA", "quantity": 120},
+    {"name": "Gucci Wallet", "type": "Fashion Accessories", "source_country": "Italy", "quantity": 85},
+    {"name": "Burberry Scarf", "type": "Clothing", "source_country": "UK", "quantity": 95},
+    {"name": "Panasonic TV", "type": "Electronics", "source_country": "Japan", "quantity": 70},
+    {"name": "Canon DSLR", "type": "Electronics", "source_country": "Japan", "quantity": 60},
+    {"name": "Guess Jacket", "type": "Clothing", "source_country": "USA", "quantity": 110}
+]

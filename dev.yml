@@ -1,0 +1,9 @@
+name: split-by-data-explorer
+
+type: python
+
+up:
+  - python: 3.10.1
+
+commands:
+  server: cd app; python -m http.server 8000

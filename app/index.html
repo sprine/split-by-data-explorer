@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="logo.png">
+    <title>Split-by data explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Roboto:wght@100;300;400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/@finos/perspective-viewer/dist/css/pro.css" />
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="max-w-screen-2xl mx-auto">
+        <div class="m-2">
+            <img src="logo.png" class="w-20 hover:grayscale transition duration-500" />
+            <b>Split-by data explorer</b>
+            <p class="text-xs">
+                Source code: 
+                <a class=" underline" href="https://github.com/sprine/split-by-data-explorer/">https://github.com/sprine/split-by-data-explorer/</a>
+            </p>
+        </div>
+
+        <div class="w-full border-l">
+            <div id="drop-area" class="p-2 text-xs">
+                <form>
+                    <p>Start by uploading a file (CSV or JSON) by dragging from your desktop and dropping below.</p>
+                    <p>(Data is processed in browser, and never sent to any server).</p>
+                    <input type="file" id="fileElem" accept=".csv,.json" />
+                    <label class="button" for="fileElem">Select a file</label>
+                </form>
+            </div>
+            <div id="container"></div>
+            <div class="text-xs border-t-4 backdrop-blur-md w-full fixed left-0 bottom-0 right-0 h-[40vh] pb-4 hidden"
+                id="data-container"></div>
+        </div>
+
+    </div>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@finos/perspective@2.8.0/dist/cdn/perspective.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@finos/perspective-viewer@2.8.0/dist/cdn/perspective-viewer.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@finos/perspective-viewer-datagrid@2.8.0/dist/cdn/perspective-viewer-datagrid.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@finos/perspective-viewer-d3fc@2.8.0/dist/cdn/perspective-viewer-d3fc.js"></script>
+
+    <script type="module">
+        import Viewer from "./Viewer.js";
+        import PerspectiveViewer from "./PerspectiveViewer.js";
+
+        import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+        const dropArea = document.getElementById("drop-area");
+        const input = document.getElementById("fileElem");
+        globalThis.perspectiveViewer = new PerspectiveViewer(document.getElementById("data-container"))
+
+        // Add event listeners to `dropArea`.
+        dropArea.addEventListener("dragenter", () => { }, false);
+        dropArea.addEventListener("dragleave", () => { }, false);
+        dropArea.addEventListener("dragover", () => { }, false);
+        dropArea.addEventListener("drop", (x) => console.log(x), false);
+
+        // Prevent defaults for drag / drop events.
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight `dropArea` on drag enter and over.
+        ["dragenter", "dragover"].forEach(function (eventName) {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        // Remove highlight `dropArea` on drag leave and drop.
+        ["dragleave", "drop"].forEach(function (eventName) {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Add class for highlighting drop area.
+        function highlight() {
+            dropArea.classList.add("bg-yellow-50");
+        }
+
+        // Remove class for highlighting drop area.
+        function unhighlight() {
+            dropArea.classList.remove("bg-yellow-50");
+        }
+
+        dropArea.addEventListener("drop", handleDrop, false);
+        input.addEventListener("change", function () {
+            handleFiles(this.files);
+        });
+
+        // Handle files attached to the drop.
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+
+            handleFiles(files);
+        }
+
+        // Iterate over files and call upload on each.
+        function handleFiles(files) {
+            [...files].forEach(uploadFile);
+        }
+
+        function uploadFile(file) {
+            let reader = new FileReader();
+            reader.onload = function (fileLoadedEvent) {
+                if (file.name.endsWith('.csv')) {
+                    let data = d3.csvParse(fileLoadedEvent.target.result);
+                    new Viewer("#container", data)
+                } else if (file.name.endsWith('.json')) {
+                    let data = JSON.parse(fileLoadedEvent.target.result);
+                    new Viewer("#container", data)
+                } else {
+                    console.error("Unsupported file type")
+                }
+
+                dropArea.querySelector("form").reset()
+            };
+
+            reader.readAsText(file);
+        }
+
+
+    </script>
+</body>
+
+</html>
